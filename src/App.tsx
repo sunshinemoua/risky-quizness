@@ -5,6 +5,14 @@ import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
+  const getQuestions = () => {
+    axios
+      .get("	https://opentdb.com/api.php?amount=10&category=17&difficulty=easy")
+      .then((response) => console.log(response.data.results));
+  };
+
+  getQuestions();
+
   return (
     <div className="App">
       <header className="App-header">
