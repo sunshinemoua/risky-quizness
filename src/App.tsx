@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import axios from "axios";
+import { Card } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Card className="question">Question</Card>
+        <Card className="choice">Answer1</Card>
+        <Card className="choice">Answer2</Card>
+        <Card className="choice">Answer3</Card>
+        <Card className="choice">Answer4</Card>
       </header>
     </div>
   );
-}
+};
 
 export default App;
