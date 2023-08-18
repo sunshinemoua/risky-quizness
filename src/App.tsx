@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-  const getQuestions = () => {
+  interface Questions {
+    question: string;
+    correct: string;
+    incorrect: any;
+  }
+  const [questions, setQuestions] = useState<Questions[]>([]);
+  useEffect(() => {
     axios
       .get("	https://opentdb.com/api.php?amount=10&category=17&difficulty=easy")
-      .then((response) => console.log(response.data.results));
-  };
+      .then((response) => {
+        const data = response.data.results;
+        setQuestions(data);
+      });
+  }, []);
 
-  getQuestions();
+  console.log(questions);
 
   return (
     <div className="App">
