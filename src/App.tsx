@@ -6,29 +6,46 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   interface Questions {
+    category: string;
+    difficulty: string;
     question: string;
-    correct: string;
-    incorrect: any;
+    correct_answer: string;
+    incorrect_answers: any;
   }
-  const [questions, setQuestions] = useState<Questions[]>([]);
+  const [question, setQuestion] = useState<Questions[]>([]);
 
   useEffect(() => {
-    axios.get("https://opentdb.com/api.php?amount=50").then((response) => {
+    axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
       const data = response.data.results;
-      setQuestions(data);
+      setQuestion(data);
     });
   }, []);
 
-  console.log(questions);
+  console.log(question);
+
+  const mapped = question.map((question) => {
+    console.log(question.correct_answer);
+    console.log(question.incorrect_answers);
+
+    const incorrect = question.incorrect_answers;
+    console.log(incorrect);
+    const mapInc = incorrect.map((inc: any) => {
+      return <Card>{inc}</Card>;
+    });
+
+    return (
+      <div>
+        <Card>{question.question}</Card>
+        {mapInc}
+        <Card>{question.correct_answer}</Card>
+      </div>
+    );
+  });
 
   return (
     <div className="App">
       <header className="App-header">
-        <Card className="question">Question</Card>
-        <Card className="choice">Answer1</Card>
-        <Card className="choice">Answer2</Card>
-        <Card className="choice">Answer3</Card>
-        <Card className="choice">Answer4</Card>
+        <div>{mapped}</div>
       </header>
     </div>
   );
