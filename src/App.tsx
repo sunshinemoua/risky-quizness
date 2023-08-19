@@ -11,13 +11,12 @@ const App = () => {
     incorrect: any;
   }
   const [questions, setQuestions] = useState<Questions[]>([]);
+
   useEffect(() => {
-    axios
-      .get("	https://opentdb.com/api.php?amount=10&category=17&difficulty=easy")
-      .then((response) => {
-        const data = response.data.results;
-        setQuestions(data);
-      });
+    axios.get("https://opentdb.com/api.php?amount=50").then((response) => {
+      const data = response.data.results;
+      setQuestions(data);
+    });
   }, []);
 
   console.log(questions);
