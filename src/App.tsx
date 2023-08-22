@@ -24,20 +24,22 @@ const App = () => {
   console.log(question);
 
   const mapped = question.map((question) => {
-    console.log(question.correct_answer);
-    console.log(question.incorrect_answers);
+    const newArr: string[] = [
+      ...question.incorrect_answers,
+      question.correct_answer,
+    ];
+    console.log(newArr);
 
-    const incorrect = question.incorrect_answers;
-    console.log(incorrect);
-    const mapInc = incorrect.map((inc: any) => {
-      return <Card>{inc}</Card>;
-    });
+    const shuffle = (arr: string[]) => {
+      return arr.sort(() => Math.random() - 0.5);
+    };
+
+    const shuffledArr = shuffle(newArr);
+    console.log(shuffledArr);
 
     return (
       <div>
-        <Card>{question.question}</Card>
-        {mapInc}
-        <Card>{question.correct_answer}</Card>
+        <Card>HI</Card>
       </div>
     );
   });
