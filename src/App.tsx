@@ -14,7 +14,18 @@ const App = () => {
     correct_answer: string;
     incorrect_answers: any;
   }
+
+  interface Correct {
+    correct: number;
+  }
+
+  interface Total {
+    total: number;
+  }
+
   const [question, setQuestion] = useState<Questions[]>([]);
+  const [correct, setCorrect] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
     axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
@@ -40,12 +51,20 @@ const App = () => {
     const mappedAnswers = shuffledArr.map((answer) => {
       const decodedAnswer = decode(answer);
 
+      const answeredCorrectly = () => {
+        setCorrect(correct + 1);
+        setTotal(total + 1);
+      };
+
+      const answeredIncorrectly = () => {
+        setTotal(total + 1);
+      };
+
       const clickHandler = () => {
-        console.log(decodedAnswer);
         if (decodedAnswer === question.correct_answer) {
-          console.log("YES");
+          answeredCorrectly();
         } else {
-          console.log("try again");
+          answeredIncorrectly();
         }
       };
 
@@ -63,6 +82,8 @@ const App = () => {
       </div>
     );
   });
+
+  console.log("ANSWERED CORRECT: " + correct + "TOTAL: " + total);
 
   return (
     <div className="App">
