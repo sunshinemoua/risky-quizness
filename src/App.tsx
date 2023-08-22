@@ -23,7 +23,7 @@ const App = () => {
 
   console.log(question);
 
-  const mapped = question.map((question) => {
+  const options = question.map((question) => {
     const newArr: string[] = [
       ...question.incorrect_answers,
       question.correct_answer,
@@ -37,17 +37,43 @@ const App = () => {
     const shuffledArr = shuffle(newArr);
     console.log(shuffledArr);
 
+    const mappedAnswers = shuffledArr.map((answer) => {
+      return <Card>{answer}</Card>;
+    });
+
     return (
       <div>
-        <Card>HI</Card>
+        <Card>{question.question}</Card>
+        {mappedAnswers}
       </div>
     );
   });
 
+  // const mapped = question.map((question) => {
+  //   const newArr: string[] = [
+  //     ...question.incorrect_answers,
+  //     question.correct_answer,
+  //   ];
+  //   console.log(newArr);
+
+  //   const shuffle = (arr: string[]) => {
+  //     return arr.sort(() => Math.random() - 0.5);
+  //   };
+
+  //   const shuffledArr = shuffle(newArr);
+  //   console.log(shuffledArr);
+
+  //   return (
+  //     <div>
+  //       <Card>HI</Card>
+  //     </div>
+  //   );
+  // });
+
   return (
     <div className="App">
       <header className="App-header">
-        <div>{mapped}</div>
+        <div>{options}</div>
       </header>
     </div>
   );
