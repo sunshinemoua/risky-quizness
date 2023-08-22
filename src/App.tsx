@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
+import { decode } from "html-entities";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,54 +23,33 @@ const App = () => {
     });
   }, []);
 
-  console.log(question);
-
   const options = question.map((question) => {
+    const decodedQuestion = decode(question.question);
+
     const newArr: string[] = [
       ...question.incorrect_answers,
       question.correct_answer,
     ];
-    console.log(newArr);
 
     const shuffle = (arr: string[]) => {
       return arr.sort(() => Math.random() - 0.5);
     };
 
     const shuffledArr = shuffle(newArr);
-    console.log(shuffledArr);
 
     const mappedAnswers = shuffledArr.map((answer) => {
-      return <Card key={uuidv4()}>{answer}</Card>;
+      const decodedAnswer = decode(answer);
+
+      return <Card key={uuidv4()}>{decodedAnswer}</Card>;
     });
 
     return (
       <div key={uuidv4()}>
-        <Card>{question.question}</Card>
+        <Card>{decodedQuestion}</Card>
         {mappedAnswers}
       </div>
     );
   });
-
-  // const mapped = question.map((question) => {
-  //   const newArr: string[] = [
-  //     ...question.incorrect_answers,
-  //     question.correct_answer,
-  //   ];
-  //   console.log(newArr);
-
-  //   const shuffle = (arr: string[]) => {
-  //     return arr.sort(() => Math.random() - 0.5);
-  //   };
-
-  //   const shuffledArr = shuffle(newArr);
-  //   console.log(shuffledArr);
-
-  //   return (
-  //     <div>
-  //       <Card>HI</Card>
-  //     </div>
-  //   );
-  // });
 
   return (
     <div className="App">
