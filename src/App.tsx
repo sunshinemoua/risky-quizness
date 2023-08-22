@@ -6,89 +6,104 @@ import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const App = () => {
-  interface Questions {
-    category: string;
-    difficulty: string;
-    question: string;
-    correct_answer: string;
-    incorrect_answers: any;
-  }
+interface Questions {
+  category: string;
+  difficulty: string;
+  question: string;
+  correct_answer: string;
+  incorrect_answers: any;
+}
 
-  interface Correct {
-    correct: number;
-  }
+interface Correct {
+  correct: number;
+}
 
-  interface Total {
-    total: number;
-  }
+interface Total {
+  total: number;
+}
 
-  const [question, setQuestion] = useState<Questions[]>([]);
+const defaultState = {
+  category: "",
+  difficulty: "",
+  question: "",
+  correct_answer: "",
+  incorrect_answers: [],
+};
+
+interface Props {
+  questions: Questions;
+}
+
+export const TriviaQuestion = ({ questions }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
-  useEffect(() => {
-    axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
-      const data = response.data.results;
-      setQuestion(data);
-    });
-  }, []);
+  const decodedQuestion = decode(questions.question);
 
-  const options = question.map((question) => {
-    const decodedQuestion = decode(question.question);
+  const newArr: string[] = [
+    ...questions.incorrect_answers,
+    questions.correct_answer,
+  ];
+  // console.log(newArr);
+  const shuffle = (arr: string[]) => {
+    return arr.sort(() => Math.random() - 0.5);
+  };
 
-    const newArr: string[] = [
-      ...question.incorrect_answers,
-      question.correct_answer,
-    ];
+  const shuffledArr = shuffle(newArr);
+  // console.log(shuffledArr);
 
-    const shuffle = (arr: string[]) => {
-      return arr.sort(() => Math.random() - 0.5);
+  const mappedAnswers = shuffledArr.map((answer) => {
+    const decodedAnswer: string = decode(answer);
+
+    const answeredCorrectly = () => {
+      setCorrect(correct + 1);
+      setTotal(total + 1);
     };
 
-    const shuffledArr = shuffle(newArr);
+    const answeredIncorrectly = () => {
+      setTotal(total + 1);
+    };
 
-    const mappedAnswers = shuffledArr.map((answer) => {
-      const decodedAnswer = decode(answer);
-
-      const answeredCorrectly = () => {
-        setCorrect(correct + 1);
-        setTotal(total + 1);
-      };
-
-      const answeredIncorrectly = () => {
-        setTotal(total + 1);
-      };
-
-      const clickHandler = () => {
-        if (decodedAnswer === question.correct_answer) {
-          answeredCorrectly();
-        } else {
-          answeredIncorrectly();
-        }
-      };
-
-      return (
-        <Card key={uuidv4()} onClick={clickHandler}>
-          {decodedAnswer}
-        </Card>
-      );
-    });
+    const clickHandler = () => {
+      // console.log(decodedAnswer);
+      if (decodedAnswer === questions.correct_answer) {
+        answeredCorrectly();
+      } else {
+        answeredIncorrectly();
+      }
+    };
+    console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
 
     return (
-      <div key={uuidv4()}>
-        <Card>{decodedQuestion}</Card>
-        {mappedAnswers}
-      </div>
+      <Card key={uuidv4()} onClick={clickHandler}>
+        {decodedAnswer}
+      </Card>
     );
   });
 
-  console.log("ANSWERED CORRECT: " + correct + "TOTAL: " + total);
+  return (
+    <div key={uuidv4()}>
+      <Card>{decodedQuestion}</Card>
+      {mappedAnswers}
+    </div>
+  );
+};
+
+const App = () => {
+  const [questions, setQuestions] = useState<Questions>(defaultState);
+
+  useEffect(() => {
+    axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
+      const data = response.data.results[0];
+      // console.log(data);
+      setQuestions(data);
+    });
+  }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        <div>{options}</div>
+        <TriviaQuestion questions={questions} />
       </header>
     </div>
   );
