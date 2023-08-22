@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -38,11 +39,11 @@ const App = () => {
     console.log(shuffledArr);
 
     const mappedAnswers = shuffledArr.map((answer) => {
-      return <Card>{answer}</Card>;
+      return <Card key={uuidv4()}>{answer}</Card>;
     });
 
     return (
-      <div>
+      <div key={uuidv4()}>
         <Card>{question.question}</Card>
         {mappedAnswers}
       </div>
