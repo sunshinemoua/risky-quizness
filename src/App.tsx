@@ -3,7 +3,7 @@ import "./App.css";
 import { v4 as uuidv4 } from "uuid";
 import { decode } from "html-entities";
 import axios from "axios";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
@@ -40,7 +40,20 @@ const App = () => {
     const mappedAnswers = shuffledArr.map((answer) => {
       const decodedAnswer = decode(answer);
 
-      return <Card key={uuidv4()}>{decodedAnswer}</Card>;
+      const clickHandler = () => {
+        console.log(decodedAnswer);
+        if (decodedAnswer === question.correct_answer) {
+          console.log("YES");
+        } else {
+          console.log("try again");
+        }
+      };
+
+      return (
+        <Card key={uuidv4()} onClick={clickHandler}>
+          {decodedAnswer}
+        </Card>
+      );
     });
 
     return (
