@@ -24,12 +24,14 @@ interface Total {
 
 interface Props {
   question: Question | null;
+  clicked: boolean;
+  setClicked: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export const TriviaQuestion = ({ question }: Props) => {
+export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [clicked, setClicked] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   if (question === null) return null;
 
@@ -40,47 +42,49 @@ export const TriviaQuestion = ({ question }: Props) => {
     question.correct_answer,
   ];
   // console.log(newArr);
+
   const shuffle = (arr: string[]) => {
     return arr.sort(() => Math.random() - 1);
   };
 
   const shuffledArr: string[] = shuffle(newArr);
-  console.log(shuffledArr);
+  // console.log(shuffledArr);
 
   const mappedAnswers = shuffledArr.map((answer) => {
     const decodedAnswer: string = decode(answer);
 
-    const answeredCorrectly = () => {
-      setCorrect(correct + 1);
-      setTotal(total + 1);
-    };
-
-    const answeredIncorrectly = () => {
-      setTotal(total + 1);
-    };
-
     const clickHandler = () => {
-      // console.log(decodedAnswer);
-      setClicked(!clicked);
+      setIsDisabled(!isDisabled);
+
       if (decodedAnswer === question.correct_answer) {
-        answeredCorrectly();
+        setCorrect(correct + 1);
+        setTotal(total + 1);
       } else {
-        answeredIncorrectly();
+        setTotal(total + 1);
       }
     };
-    console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
+
+    // console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
 
     return (
-      <Button key={uuidv4()} onClick={clickHandler} disabled={clicked && true}>
+      <Button key={uuidv4()} onClick={clickHandler} disabled={isDisabled}>
         {decodedAnswer}
       </Button>
     );
   });
 
+  const nextBtnHandler = () => {
+    setClicked(!clicked);
+    setIsDisabled(!isDisabled);
+  };
+
   return (
     <div key={uuidv4()}>
-      <Card>{decodedQuestion}</Card>
-      {mappedAnswers}
+      <div>
+        <Card>{decodedQuestion}</Card>
+        {mappedAnswers}
+      </div>
+      <Button onClick={nextBtnHandler}>Next</Button>
     </div>
   );
 };
@@ -96,13 +100,14 @@ const App = () => {
     });
   }, [clicked]);
 
-  console.log(question);
-
   return (
     <div className="App">
       <header className="App-header">
-        <TriviaQuestion question={question} />
-        <Button onClick={() => setClicked(!clicked)}>Next</Button>
+        <TriviaQuestion
+          question={question}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
       </header>
     </div>
   );
