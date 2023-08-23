@@ -46,11 +46,11 @@ export const TriviaQuestion = ({ questions }: Props) => {
   ];
   // console.log(newArr);
   const shuffle = (arr: string[]) => {
-    return arr.sort(() => Math.random() - 0.5);
+    return arr.sort(() => Math.random() - 1);
   };
 
   const shuffledArr = shuffle(newArr);
-  // console.log(shuffledArr);
+  console.log(shuffledArr);
 
   const mappedAnswers = shuffledArr.map((answer) => {
     const decodedAnswer: string = decode(answer);
