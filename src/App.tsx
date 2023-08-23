@@ -94,7 +94,7 @@ const App = () => {
       const data: Question = response.data.results[0];
       setQuestion(data);
     });
-  }, []);
+  }, [clicked]);
 
   console.log(question);
 
