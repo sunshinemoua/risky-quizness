@@ -29,6 +29,7 @@ interface Props {
 export const TriviaQuestion = ({ question }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const [clicked, setClicked] = useState<boolean>(false);
 
   if (question === null) return null;
 
@@ -60,6 +61,7 @@ export const TriviaQuestion = ({ question }: Props) => {
 
     const clickHandler = () => {
       // console.log(decodedAnswer);
+      setClicked(!clicked);
       if (decodedAnswer === question.correct_answer) {
         answeredCorrectly();
       } else {
@@ -69,7 +71,7 @@ export const TriviaQuestion = ({ question }: Props) => {
     console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
 
     return (
-      <Button key={uuidv4()} onClick={clickHandler}>
+      <Button key={uuidv4()} onClick={clickHandler} disabled={clicked && true}>
         {decodedAnswer}
       </Button>
     );
@@ -95,6 +97,7 @@ const App = () => {
   }, []);
 
   console.log(question);
+
   return (
     <div className="App">
       <header className="App-header">
