@@ -85,7 +85,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
         <Card>
           Correct: {correct} / {total}
         </Card>
-        <Card> Score: {score}%</Card>
+        <Card> Score: {score >= 0 ? score : 0}%</Card>
       </div>
       <div className="question-wrapper">
         <Card>{decodedQuestion}</Card>
