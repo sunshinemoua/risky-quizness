@@ -6,7 +6,7 @@ import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-interface Questions {
+interface Question {
   category: string;
   difficulty: string;
   question: string;
@@ -22,34 +22,28 @@ interface Total {
   total: number;
 }
 
-const defaultState = {
-  category: "",
-  difficulty: "",
-  question: "",
-  correct_answer: "",
-  incorrect_answers: [],
-};
-
 interface Props {
-  questions: Questions;
+  question: Question | null;
 }
 
-export const TriviaQuestion = ({ questions }: Props) => {
+export const TriviaQuestion = ({ question }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
-  const decodedQuestion = decode(questions.question);
+  if (question === null) return null;
+
+  const decodedQuestion: string = decode(question.question);
 
   const newArr: string[] = [
-    ...questions.incorrect_answers,
-    questions.correct_answer,
+    ...question.incorrect_answers,
+    question.correct_answer,
   ];
   // console.log(newArr);
   const shuffle = (arr: string[]) => {
     return arr.sort(() => Math.random() - 1);
   };
 
-  const shuffledArr = shuffle(newArr);
+  const shuffledArr: string[] = shuffle(newArr);
   console.log(shuffledArr);
 
   const mappedAnswers = shuffledArr.map((answer) => {
@@ -66,7 +60,7 @@ export const TriviaQuestion = ({ questions }: Props) => {
 
     const clickHandler = () => {
       // console.log(decodedAnswer);
-      if (decodedAnswer === questions.correct_answer) {
+      if (decodedAnswer === question.correct_answer) {
         answeredCorrectly();
       } else {
         answeredIncorrectly();
@@ -90,21 +84,21 @@ export const TriviaQuestion = ({ questions }: Props) => {
 };
 
 const App = () => {
-  const [questions, setQuestions] = useState<Questions>(defaultState);
-  const [clicked, setClicked] = useState(false);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [clicked, setClicked] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
-      const data = response.data.results[0];
-      // console.log(data);
-      setQuestions(data);
+      const data: Question = response.data.results[0];
+      setQuestion(data);
     });
   }, []);
 
+  console.log(question);
   return (
     <div className="App">
       <header className="App-header">
-        <TriviaQuestion questions={questions} />
+        <TriviaQuestion question={question} />
         <Button onClick={() => setClicked(!clicked)}>Next</Button>
       </header>
     </div>
