@@ -75,9 +75,9 @@ export const TriviaQuestion = ({ questions }: Props) => {
     console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
 
     return (
-      <Card key={uuidv4()} onClick={clickHandler}>
+      <Button key={uuidv4()} onClick={clickHandler}>
         {decodedAnswer}
-      </Card>
+      </Button>
     );
   });
 
@@ -91,6 +91,7 @@ export const TriviaQuestion = ({ questions }: Props) => {
 
 const App = () => {
   const [questions, setQuestions] = useState<Questions>(defaultState);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
@@ -104,6 +105,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <TriviaQuestion questions={questions} />
+        <Button onClick={() => setClicked(!clicked)}>Next</Button>
       </header>
     </div>
   );
