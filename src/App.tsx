@@ -3,7 +3,7 @@ import "./App.css";
 import { v4 as uuidv4 } from "uuid";
 import { decode } from "html-entities";
 import axios from "axios";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Question {
@@ -65,12 +65,12 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
       }
     };
 
-    console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
-
     return (
-      <Button key={uuidv4()} onClick={clickHandler} disabled={isDisabled}>
-        {decodedAnswer}
-      </Button>
+      <div className="d-flex m-2">
+        <Button key={uuidv4()} onClick={clickHandler} disabled={isDisabled}>
+          {decodedAnswer}
+        </Button>
+      </div>
     );
   });
 
@@ -81,17 +81,23 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
   return (
     <div key={uuidv4()}>
-      <div className="calculations-wrapper">
-        <Card>
-          Correct: {correct} / {total}
-        </Card>
-        <Card> Score: {score >= 0 ? score : 0}%</Card>
-      </div>
-      <div className="question-wrapper">
-        <Card>{decodedQuestion}</Card>
-        {mappedAnswers}
-      </div>
-      <Button onClick={nextBtnHandler}>Next</Button>
+      <Stack gap={2} className="d-flex align-items-center">
+        <div className="calculations-wrapper">
+          <Card>
+            Correct: {correct} / {total}
+          </Card>
+          <Card> Score: {score >= 0 ? score : 0}%</Card>
+        </div>
+        <div className="d-flex flex-column align-items-center justify-content-center">
+          <Card className="w-75 p-5">
+            {decodedQuestion}
+            {mappedAnswers}
+          </Card>{" "}
+          <Button className="w-50" onClick={nextBtnHandler}>
+            Next
+          </Button>
+        </div>
+      </Stack>
     </div>
   );
 };
