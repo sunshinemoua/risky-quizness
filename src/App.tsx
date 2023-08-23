@@ -36,6 +36,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   if (question === null) return null;
 
   const decodedQuestion: string = decode(question.question);
+  const score: number = Math.floor((correct / total) * 100);
 
   const newArr: string[] = [
     ...question.incorrect_answers,
@@ -64,7 +65,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
       }
     };
 
-    // console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
+    console.log("ANSWERED CORRECT: " + correct + " TOTAL: " + total);
 
     return (
       <Button key={uuidv4()} onClick={clickHandler} disabled={isDisabled}>
@@ -80,7 +81,13 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
   return (
     <div key={uuidv4()}>
-      <div>
+      <div className="calculations-wrapper">
+        <Card>
+          Correct: {correct} / {total}
+        </Card>
+        <Card> Score: {score}%</Card>
+      </div>
+      <div className="question-wrapper">
         <Card>{decodedQuestion}</Card>
         {mappedAnswers}
       </div>
