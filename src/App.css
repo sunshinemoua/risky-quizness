@@ -51,9 +51,8 @@
 
 .question {
   font-size: 0.75rem;
-  height: 100%;
   width: 100%;
-  padding: 20px 40px;
+  padding: inherit;
   margin: 0;
 }
 
