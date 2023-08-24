@@ -66,12 +66,13 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
     };
 
     return (
-      <div className="d-flex m-2">
+      <div className="d-flex my-2">
         <Button
           key={uuidv4()}
           onClick={clickHandler}
           disabled={isDisabled}
           size="sm"
+          className="answer-options"
         >
           {decodedAnswer}
         </Button>
