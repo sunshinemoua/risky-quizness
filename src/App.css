@@ -65,6 +65,10 @@
   margin-top: 2rem;
 }
 
+.answer-options {
+  width: 100%;
+}
+
 .choice {
   font-size: 0.75rem;
 }
