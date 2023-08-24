@@ -67,7 +67,12 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
     return (
       <div className="d-flex m-2">
-        <Button key={uuidv4()} onClick={clickHandler} disabled={isDisabled}>
+        <Button
+          key={uuidv4()}
+          onClick={clickHandler}
+          disabled={isDisabled}
+          size="sm"
+        >
           {decodedAnswer}
         </Button>
       </div>
@@ -81,7 +86,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
   return (
     <div key={uuidv4()}>
-      <Stack gap={2} className="d-flex align-items-center">
+      <div className="trivia-card-wrapper">
         <div className="calculations-wrapper">
           <Card>
             Correct: {correct} / {total}
@@ -89,15 +94,17 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
           <Card> Score: {score >= 0 ? score : 0}%</Card>
         </div>
         <div className="d-flex flex-column align-items-center justify-content-center">
-          <Card className="w-75 p-5">
-            {decodedQuestion}
-            {mappedAnswers}
-          </Card>{" "}
+          <Card className="question-bg-card">
+            <div className="question-wrapper">
+              <Card className="question">{decodedQuestion}</Card>
+              <div className="answers-wrapper">{mappedAnswers}</div>
+            </div>
+          </Card>
           <Button className="w-50" onClick={nextBtnHandler}>
             Next
           </Button>
         </div>
-      </Stack>
+      </div>
     </div>
   );
 };
