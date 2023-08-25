@@ -32,7 +32,9 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [isCorrect, setIsCorrect] = useState<any>([]);
+  const [isNotCorrect, setIsNotCorrect] = useState<any>([]);
+
   const [color, setColor] = useState<string>("primary");
 
   if (question === null) return null;
@@ -53,41 +55,44 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const shuffledArr: string[] = shuffle(newArr);
   // console.log(shuffledArr);
 
-  const mappedAnswers = shuffledArr.map((answer) => {
+  const clickHandler = (selected: any) => {
+    setIsDisabled(!isDisabled);
+
+    if (selected === question.correct_answer) {
+      setIsCorrect(shuffledArr.filter((item) => item === selected));
+      setIsNotCorrect(shuffledArr.filter((item) => item !== selected));
+
+      setCorrect(correct + 1);
+      setTotal(total + 1);
+    } else {
+      setIsCorrect([question.correct_answer]);
+      setIsNotCorrect(
+        shuffledArr.filter((item) => item !== question.correct_answer)
+      );
+      setTotal(total + 1);
+    }
+  };
+
+  console.log(color);
+  console.log(isNotCorrect);
+
+  const mappedAnswers = shuffledArr.map((answer, index) => {
     const decodedAnswer: string = decode(answer);
 
-    const clickHandler = () => {
-      setIsDisabled(!isDisabled);
-
-      if (decodedAnswer === question.correct_answer) {
-        setCorrect(correct + 1);
-        setTotal(total + 1);
-        changeColor();
-      } else {
-        setTotal(total + 1);
-        changeColor();
-      }
-    };
-
-    const changeColor = () => {
-      if (decodedAnswer === question.correct_answer) {
-        setIsCorrect(true);
-        setColor("success");
-      } else {
-        setIsCorrect(false);
-        setColor("danger");
-      }
-    };
-
-    console.log(color);
-
     return (
-      <div className="d-flex my-2" key={uuidv4()}>
+      <div className="d-flex my-2" key={index}>
         <Button
-          onClick={clickHandler}
+          onClick={() => clickHandler(decodedAnswer)}
           // disabled={isDisabled}
-          size="sm"
-          className={"answer-options-" + { color }}
+          // size="sm"
+          className={color}
+          variant={
+            isCorrect.includes(decodedAnswer)
+              ? "success"
+              : isNotCorrect.includes(decodedAnswer)
+              ? "danger"
+              : "primary"
+          }
         >
           {decodedAnswer}
         </Button>
