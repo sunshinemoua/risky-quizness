@@ -94,17 +94,16 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
           </Card>
           <Card> Score: {score >= 0 ? score : 0}%</Card>
         </div>
-        <div className="d-flex flex-column align-items-center justify-content-center">
-          <Card className="question-bg-card">
-            <div className="question-wrapper">
-              <Card className="question">{decodedQuestion}</Card>
-              <div className="answers-wrapper">{mappedAnswers}</div>
-            </div>
-          </Card>
-          <Button className="w-50" onClick={nextBtnHandler}>
-            Next
-          </Button>
-        </div>
+
+        <Card className="question-bg-card">
+          <div className="question-wrapper">
+            <Card className="question">{decodedQuestion}</Card>
+            <div className="answers-wrapper">{mappedAnswers}</div>
+          </div>
+        </Card>
+        <Button className="w-50" onClick={nextBtnHandler}>
+          Next
+        </Button>
       </div>
     </div>
   );
