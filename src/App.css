@@ -54,10 +54,28 @@
   margin-top: 2rem;
 }
 
-.answer-options {
+.answer-options-primary {
   width: 100%;
+  background-color: blue;
+}
+
+.answer-options-red {
+  width: 100%;
+  background-color: red;
+}
+.answer-options-green {
+  width: 100%;
+  background-color: green;
 }
 
 .choice {
   font-size: 0.75rem;
+}
+
+.btn.btn-primary.success {
+  background: green;
+}
+
+.btn.btn-primary.danger {
+  background-color: red;
 }

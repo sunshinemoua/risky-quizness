@@ -32,6 +32,8 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [color, setColor] = useState<string>("primary");
 
   if (question === null) return null;
 
@@ -60,19 +62,32 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
       if (decodedAnswer === question.correct_answer) {
         setCorrect(correct + 1);
         setTotal(total + 1);
+        changeColor();
       } else {
         setTotal(total + 1);
+        changeColor();
       }
     };
 
+    const changeColor = () => {
+      if (decodedAnswer === question.correct_answer) {
+        setIsCorrect(true);
+        setColor("success");
+      } else {
+        setIsCorrect(false);
+        setColor("danger");
+      }
+    };
+
+    console.log(color);
+
     return (
-      <div className="d-flex my-2">
+      <div className="d-flex my-2" key={uuidv4()}>
         <Button
-          key={uuidv4()}
           onClick={clickHandler}
-          disabled={isDisabled}
+          // disabled={isDisabled}
           size="sm"
-          className="answer-options"
+          className={"answer-options-" + { color }}
         >
           {decodedAnswer}
         </Button>
@@ -86,23 +101,21 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   };
 
   return (
-    <div key={uuidv4()}>
-      <div className="trivia-card-wrapper">
-        <div className="calculations-wrapper">
-          <Card>
-            Correct: {correct} / {total}
-          </Card>
-          <Card> Score: {score >= 0 ? score : 0}%</Card>
-        </div>
-
-        <Card className="question-bg-card">
-          <Card className="question">{decodedQuestion}</Card>
-          <div className="answers-wrapper">{mappedAnswers}</div>
+    <div className="trivia-card-wrapper">
+      <div className="calculations-wrapper">
+        <Card>
+          Correct: {correct} / {total}
         </Card>
-        <Button className="w-50" onClick={nextBtnHandler}>
-          Next
-        </Button>
+        <Card> Score: {score >= 0 ? score : 0}%</Card>
       </div>
+
+      <Card className="question-bg-card">
+        <Card className="question">{decodedQuestion}</Card>
+        <div className="answers-wrapper">{mappedAnswers}</div>
+      </Card>
+      <Button className="w-50" onClick={nextBtnHandler}>
+        Next
+      </Button>
     </div>
   );
 };
