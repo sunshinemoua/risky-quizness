@@ -96,10 +96,8 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
         </div>
 
         <Card className="question-bg-card">
-          <div className="question-wrapper">
-            <Card className="question">{decodedQuestion}</Card>
-            <div className="answers-wrapper">{mappedAnswers}</div>
-          </div>
+          <Card className="question">{decodedQuestion}</Card>
+          <div className="answers-wrapper">{mappedAnswers}</div>
         </Card>
         <Button className="w-50" onClick={nextBtnHandler}>
           Next
