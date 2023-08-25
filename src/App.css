@@ -34,8 +34,7 @@
   align-items: center;
   justify-content: center;
   width: 75vw;
-  height: 60vh;
-  padding: 20%;
+  padding: 10% 15%;
   margin: 0;
 }
 
@@ -52,7 +51,7 @@
 .question {
   font-size: 0.75rem;
   width: 100%;
-  padding: 20%;
+  padding: 5% 10%;
   margin: 0;
 }
 
