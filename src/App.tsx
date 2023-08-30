@@ -54,6 +54,14 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   console.log(correctAnswer);
   console.log("SUFFLED ARR " + shuffledArr);
 
+  const encodedIncorrectAnswers = question.incorrect_answers.map((ans: any) => {
+    const encodedIncorrect = encode(ans);
+    console.log(encodedIncorrect);
+    return encodedIncorrect;
+  });
+
+  console.log(encodedIncorrectAnswers);
+
   const clickHandler = (selected: any) => {
     console.log("SELECTING " + selected);
 
