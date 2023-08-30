@@ -46,14 +46,15 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
     ...question.incorrect_answers,
     question.correct_answer,
   ];
-  // console.log(newArr);
+  console.log("NEW ARR " + newArr);
 
   const shuffle = (arr: string[]) => {
-    return arr.sort(() => Math.random() - 1);
+    return arr.sort(() => Math.random() - 0.5);
   };
 
   const shuffledArr: string[] = shuffle(newArr);
-  // console.log(shuffledArr);
+  console.log(question.correct_answer);
+  console.log("SUFFLED ARR " + shuffledArr);
 
   const clickHandler = (selected: any) => {
     setIsDisabled(!isDisabled);
