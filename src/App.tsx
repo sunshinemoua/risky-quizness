@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
-import { decode } from "html-entities";
+import { decode, encode } from "html-entities";
 import axios from "axios";
 import { Card, Button, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -40,12 +40,10 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   if (question === null) return null;
 
   const decodedQuestion: string = decode(question.question);
+  const correctAnswer: string = decode(question.correct_answer);
   const score: number = Math.floor((correct / total) * 100);
 
-  const newArr: string[] = [
-    ...question.incorrect_answers,
-    question.correct_answer,
-  ];
+  const newArr: string[] = [...question.incorrect_answers, correctAnswer];
   console.log("NEW ARR " + newArr);
 
   const shuffle = (arr: string[]) => {
@@ -53,23 +51,26 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   };
 
   const shuffledArr: string[] = shuffle(newArr);
-  console.log(question.correct_answer);
+  console.log(correctAnswer);
   console.log("SUFFLED ARR " + shuffledArr);
 
   const clickHandler = (selected: any) => {
+    console.log("SELECTING " + selected);
+
+    const encodedSelected: string = encode(selected);
+    console.log("ENCODED " + encodedSelected);
+
     setIsDisabled(!isDisabled);
 
-    if (selected === question.correct_answer) {
-      setIsCorrect(shuffledArr.filter((item) => item === selected));
-      setIsNotCorrect(shuffledArr.filter((item) => item !== selected));
+    if (encodedSelected === question.correct_answer) {
+      setIsCorrect(shuffledArr.filter((item) => item === encodedSelected));
+      setIsNotCorrect(shuffledArr.filter((item) => item !== encodedSelected));
 
       setCorrect(correct + 1);
       setTotal(total + 1);
     } else {
-      setIsCorrect([question.correct_answer]);
-      setIsNotCorrect(
-        shuffledArr.filter((item) => item !== question.correct_answer)
-      );
+      setIsCorrect([correctAnswer]);
+      setIsNotCorrect(shuffledArr.filter((item) => item !== correctAnswer));
       setTotal(total + 1);
     }
   };
