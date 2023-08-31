@@ -37,6 +37,10 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
   const [color, setColor] = useState<string>("primary");
 
+  useEffect(() => {
+    const shuffledArr: string[] = shuffle(newArr);
+  });
+
   if (question === null) return null;
 
   const decodedQuestion: string = decode(question.question);
@@ -44,23 +48,17 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const score: number = Math.floor((correct / total) * 100);
 
   const newArr: string[] = [...question.incorrect_answers, correctAnswer];
-  console.log("NEW ARR " + newArr);
 
   const shuffle = (arr: string[]) => {
     return arr.sort(() => Math.random() - 0.5);
   };
 
-  const shuffledArr: string[] = shuffle(newArr);
-  console.log(correctAnswer);
-  console.log("SUFFLED ARR " + shuffledArr);
+  // const shuffledArr: string[] = shuffle(newArr);
 
   const encodedIncorrectAnswers = question.incorrect_answers.map((ans: any) => {
     const encodedIncorrect = encode(ans);
-    console.log(encodedIncorrect);
     return encodedIncorrect;
   });
-
-  console.log(encodedIncorrectAnswers);
 
   const clickHandler = (selected: any) => {
     console.log("SELECTING " + selected);
@@ -69,6 +67,8 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
     console.log("ENCODED " + encodedSelected);
 
     setIsDisabled(!isDisabled);
+
+    console.log(shuffledArr);
 
     if (encodedSelected === question.correct_answer) {
       setIsCorrect(shuffledArr.filter((item) => item === encodedSelected));
@@ -82,9 +82,6 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
       setTotal(total + 1);
     }
   };
-
-  console.log(color);
-  console.log(isNotCorrect);
 
   const mappedAnswers = shuffledArr.map((answer, index) => {
     const decodedAnswer: string = decode(answer);
