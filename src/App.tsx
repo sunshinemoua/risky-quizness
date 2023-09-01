@@ -114,7 +114,7 @@ export const TriviaQuestion = ({
         <Card className="question">{decodedQuestion}</Card>
         <div className="answers-wrapper">{mappedAnswers}</div>
       </Card>
-      <Button className="w-50" onClick={nextBtnHandler}>
+      <Button className="w-50" onClick={nextBtnHandler} disabled={!isDisabled}>
         Next
       </Button>
     </div>
