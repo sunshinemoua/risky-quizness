@@ -34,7 +34,7 @@
   align-items: center;
   justify-content: center;
   width: 75vw;
-  /* height: 60vh; */
+  height: 60vh;
   padding: 10% 15%;
   margin: 0;
 }
@@ -72,10 +72,6 @@
   font-size: 0.75rem;
 }
 
-.btn.btn-primary.success {
-  background: green;
-}
-
-.btn.btn-primary.danger {
-  background-color: red;
+.btn.btn-success:disabled {
+  opacity: 1;
 }
