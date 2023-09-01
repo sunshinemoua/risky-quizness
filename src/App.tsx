@@ -27,7 +27,6 @@ interface Props {
   clicked: boolean;
   setClicked: React.Dispatch<React.SetStateAction<any>>;
   options: string[];
-  shuffledArr: string[];
 }
 
 export const TriviaQuestion = ({
@@ -35,29 +34,18 @@ export const TriviaQuestion = ({
   clicked,
   setClicked,
   options,
-  shuffledArr,
 }: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<any>([]);
   const [isNotCorrect, setIsNotCorrect] = useState<any>([]);
-  const [color, setColor] = useState<string>("primary");
 
   if (question === null) return null;
 
   const decodedQuestion: string = decode(question.question);
   const correctAnswer: string = decode(question.correct_answer);
   const score: number = Math.floor((correct / total) * 100);
-
-  // const newArr: string[] = [...question.incorrect_answers, correctAnswer];
-
-  // const shuffle = (arr: string[]) => {
-  //   return arr.sort(() => Math.random() - 0.5);
-  // };
-
-  // const shuffledArr: string[] = shuffle(newArr);
-  // console.log(shuffledArr);
 
   const encodedIncorrectAnswers = question.incorrect_answers.map((ans: any) => {
     const encodedIncorrect = encode(ans);
@@ -71,8 +59,6 @@ export const TriviaQuestion = ({
     console.log("ENCODED " + encodedSelected);
 
     setIsDisabled(!isDisabled);
-
-    console.log(shuffledArr);
 
     if (encodedSelected === question.correct_answer) {
       setIsCorrect(options.filter((item) => item === encodedSelected));
@@ -94,9 +80,6 @@ export const TriviaQuestion = ({
       <div className="d-flex my-2" key={index}>
         <Button
           onClick={() => clickHandler(decodedAnswer)}
-          // disabled={isDisabled}
-          // size="sm"
-          className={color}
           variant={
             isCorrect.includes(decodedAnswer)
               ? "success"
@@ -139,7 +122,6 @@ export const TriviaQuestion = ({
 
 const App = () => {
   const [question, setQuestion] = useState<Question | null>(null);
-  const [shuffledArr, setShuffledArr] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
   const [clicked, setClicked] = useState<boolean>(false);
 
@@ -165,35 +147,7 @@ const App = () => {
     return arr.sort(() => Math.random() - 0.5);
   };
 
-  //   const newShuffled: string[] = shuffle(options);
-  //   console.log(newShuffled);
-  //   setShuffledArr(newShuffled);
-  //   console.log(shuffledArr);
-  // };
-
-  console.log(options);
-
   console.log(question);
-
-  // useEffect(() => {
-  //   axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
-  //     const data: Question = response.data.results[0];
-  //     setQuestion(data);
-
-  //     const newArr = [...data.incorrect_answers, data.correct_answer];
-  //     console.log(newArr);
-  //     setOptions(newArr);
-
-  //     const shuffle = (arr: string[]) => {
-  //       return arr.sort(() => Math.random() - 0.5);
-  //     };
-
-  //     const newShuffled: string[] = shuffle(options);
-  //     console.log(newShuffled);
-  //     setShuffledArr(newShuffled);
-  //     console.log(shuffledArr);
-  //   });
-  // }, [clicked]);
 
   return (
     <div className="App">
@@ -203,7 +157,6 @@ const App = () => {
           clicked={clicked}
           setClicked={setClicked}
           options={options}
-          shuffledArr={shuffledArr}
         />
       </header>
     </div>
