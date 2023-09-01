@@ -26,15 +26,22 @@ interface Props {
   question: Question | null;
   clicked: boolean;
   setClicked: React.Dispatch<React.SetStateAction<any>>;
+  options: string[];
+  shuffledArr: string[];
 }
 
-export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
+export const TriviaQuestion = ({
+  question,
+  clicked,
+  setClicked,
+  options,
+  shuffledArr,
+}: Props) => {
   const [correct, setCorrect] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<any>([]);
   const [isNotCorrect, setIsNotCorrect] = useState<any>([]);
-
   const [color, setColor] = useState<string>("primary");
 
   if (question === null) return null;
@@ -43,24 +50,19 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
   const correctAnswer: string = decode(question.correct_answer);
   const score: number = Math.floor((correct / total) * 100);
 
-  const newArr: string[] = [...question.incorrect_answers, correctAnswer];
-  console.log("NEW ARR " + newArr);
+  // const newArr: string[] = [...question.incorrect_answers, correctAnswer];
 
-  const shuffle = (arr: string[]) => {
-    return arr.sort(() => Math.random() - 0.5);
-  };
+  // const shuffle = (arr: string[]) => {
+  //   return arr.sort(() => Math.random() - 0.5);
+  // };
 
-  const shuffledArr: string[] = shuffle(newArr);
-  console.log(correctAnswer);
-  console.log("SUFFLED ARR " + shuffledArr);
+  // const shuffledArr: string[] = shuffle(newArr);
+  // console.log(shuffledArr);
 
   const encodedIncorrectAnswers = question.incorrect_answers.map((ans: any) => {
     const encodedIncorrect = encode(ans);
-    console.log(encodedIncorrect);
     return encodedIncorrect;
   });
-
-  console.log(encodedIncorrectAnswers);
 
   const clickHandler = (selected: any) => {
     console.log("SELECTING " + selected);
@@ -69,6 +71,8 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
     console.log("ENCODED " + encodedSelected);
 
     setIsDisabled(!isDisabled);
+
+    console.log(shuffledArr);
 
     if (encodedSelected === question.correct_answer) {
       setIsCorrect(shuffledArr.filter((item) => item === encodedSelected));
@@ -82,10 +86,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
       setTotal(total + 1);
     }
   };
-
-  console.log(color);
-  console.log(isNotCorrect);
-
+  console.log(shuffledArr);
   const mappedAnswers = shuffledArr.map((answer, index) => {
     const decodedAnswer: string = decode(answer);
 
@@ -115,6 +116,7 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
     setIsDisabled(!isDisabled);
   };
 
+  console.log(mappedAnswers);
   return (
     <div className="trivia-card-wrapper">
       <div className="calculations-wrapper">
@@ -137,14 +139,33 @@ export const TriviaQuestion = ({ question, clicked, setClicked }: Props) => {
 
 const App = () => {
   const [question, setQuestion] = useState<Question | null>(null);
+  const [shuffledArr, setShuffledArr] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[]>([]);
   const [clicked, setClicked] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
       const data: Question = response.data.results[0];
       setQuestion(data);
+
+      const newArr = [...data.incorrect_answers, data.correct_answer];
+      console.log(newArr);
+      setOptions(newArr);
+
+      const shuffle = (arr: string[]) => {
+        return arr.sort(() => Math.random() - 0.5);
+      };
+
+      console.log(options);
+      const newShuffled: string[] = shuffle(options);
+      console.log(newShuffled);
+      setShuffledArr(newShuffled);
+      console.log(shuffledArr);
     });
   }, [clicked]);
+
+  console.log(options);
+  console.log(shuffledArr);
 
   return (
     <div className="App">
@@ -153,6 +174,8 @@ const App = () => {
           question={question}
           clicked={clicked}
           setClicked={setClicked}
+          options={options}
+          shuffledArr={shuffledArr}
         />
       </header>
     </div>
