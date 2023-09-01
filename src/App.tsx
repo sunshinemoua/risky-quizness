@@ -75,19 +75,19 @@ export const TriviaQuestion = ({
     console.log(shuffledArr);
 
     if (encodedSelected === question.correct_answer) {
-      setIsCorrect(shuffledArr.filter((item) => item === encodedSelected));
-      setIsNotCorrect(shuffledArr.filter((item) => item !== encodedSelected));
+      setIsCorrect(options.filter((item) => item === encodedSelected));
+      setIsNotCorrect(options.filter((item) => item !== encodedSelected));
 
       setCorrect(correct + 1);
       setTotal(total + 1);
     } else {
       setIsCorrect([correctAnswer]);
-      setIsNotCorrect(shuffledArr.filter((item) => item !== correctAnswer));
+      setIsNotCorrect(options.filter((item) => item !== correctAnswer));
       setTotal(total + 1);
     }
   };
-  console.log(shuffledArr);
-  const mappedAnswers = shuffledArr.map((answer, index) => {
+
+  const mappedAnswers = options.map((answer, index) => {
     const decodedAnswer: string = decode(answer);
 
     return (
@@ -144,28 +144,56 @@ const App = () => {
   const [clicked, setClicked] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
+    getData();
+  }, [clicked]);
+
+  const getData = async () => {
+    await axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
       const data: Question = response.data.results[0];
       setQuestion(data);
 
       const newArr = [...data.incorrect_answers, data.correct_answer];
       console.log(newArr);
-      setOptions(newArr);
 
-      const shuffle = (arr: string[]) => {
-        return arr.sort(() => Math.random() - 0.5);
-      };
-
-      console.log(options);
-      const newShuffled: string[] = shuffle(options);
+      const newShuffled = shuffle(newArr);
       console.log(newShuffled);
-      setShuffledArr(newShuffled);
-      console.log(shuffledArr);
+      setOptions(newShuffled);
     });
-  }, [clicked]);
+  };
+
+  const shuffle = (arr: string[]) => {
+    return arr.sort(() => Math.random() - 0.5);
+  };
+
+  //   const newShuffled: string[] = shuffle(options);
+  //   console.log(newShuffled);
+  //   setShuffledArr(newShuffled);
+  //   console.log(shuffledArr);
+  // };
 
   console.log(options);
-  console.log(shuffledArr);
+
+  console.log(question);
+
+  // useEffect(() => {
+  //   axios.get("https://opentdb.com/api.php?amount=1").then((response) => {
+  //     const data: Question = response.data.results[0];
+  //     setQuestion(data);
+
+  //     const newArr = [...data.incorrect_answers, data.correct_answer];
+  //     console.log(newArr);
+  //     setOptions(newArr);
+
+  //     const shuffle = (arr: string[]) => {
+  //       return arr.sort(() => Math.random() - 0.5);
+  //     };
+
+  //     const newShuffled: string[] = shuffle(options);
+  //     console.log(newShuffled);
+  //     setShuffledArr(newShuffled);
+  //     console.log(shuffledArr);
+  //   });
+  // }, [clicked]);
 
   return (
     <div className="App">
