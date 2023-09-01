@@ -87,6 +87,7 @@ export const TriviaQuestion = ({
               ? "danger"
               : "primary"
           }
+          disabled={isDisabled}
         >
           {decodedAnswer}
         </Button>
