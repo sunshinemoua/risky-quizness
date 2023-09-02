@@ -110,10 +110,8 @@ export const TriviaQuestion = ({
         <Card> Score: {score >= 0 ? score : 0}%</Card>
       </div>
 
-      <Card className="question-bg-card">
-        <Card className="question">{decodedQuestion}</Card>
-        <div className="answers-wrapper">{mappedAnswers}</div>
-      </Card>
+      <Card className="question">{decodedQuestion}</Card>
+      <div className="answers-wrapper">{mappedAnswers}</div>
       <Button className="w-50" onClick={nextBtnHandler} disabled={!isDisabled}>
         Next
       </Button>
